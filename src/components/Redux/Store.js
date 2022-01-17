@@ -1,55 +1,298 @@
 const redux = require("redux");
 const INITIAL_STATE = {
     logged: false,
-    username: "",
+    user: {
+        username: "",
+        password: ""
+    },
+    post: {
+        id: "",
+        title: "",
+        body: ""
+    },
+    postCollection: [],
     errorAlertVisible: false,
     errorAlertText: "",
     infoAlertVisible: true,
     infoAlertText: "WELCOME"
 };
 const reducer = function (state, action) {
-    switch (action.type) {
-        case "LOGIN": {
-            return {
-                logged: true,
-                username: action.username,
-                errorAlertVisible: false,
-                errorAlertText: "",
-                infoAlertVisible: true,
-                infoAlertText: "LOGGED IN SUCCESSFULLY."
-            }
-        }
-        case "LOGOUT":
-            return {
-                logged: false,
+    if (action.type === "ERROR") {
+        return {
+            logged: state.logged,
+            user: {
+                username: state.user.username,
+                password: state.user.password
+            },
+            post: {
+                id: state.post.id,
+                title: state.post.title,
+                body: state.post.body
+            },
+            postCollection: state.postCollection,
+            errorAlertVisible: true,
+            errorAlertText: action.payload,
+            infoAlertVisible: false,
+            infoAlertText: ""
+        };
+    }
+    else if (action.type === "INFO") {
+        return {
+            logged: state.logged,
+            user: {
+                username: state.user.username,
+                password: state.user.password
+            },
+            post: {
+                id: state.post.id,
+                title: state.post.title,
+                body: state.post.body
+            },
+            postCollection: state.postCollection,
+            errorAlertVisible: false,
+            errorAlertText: "",
+            infoAlertVisible: true,
+            infoAlertText: action.payload
+        };
+    }
+    else if (action.type === "USERNAMECHANGED") {
+        return {
+            logged: state.logged,
+            user: {
+                username: action.payload,
+                password: state.user.password
+            },
+            post: {
+                id: state.post.id,
+                title: state.post.title,
+                body: state.post.body
+            },
+            postCollection: state.postCollection,
+            errorAlertVisible: false,
+            errorAlertText: "",
+            infoAlertVisible: true,
+            infoAlertText: "USERNAME CHANGED SUCCESSFULLY."
+        };
+    }
+    else if (action.type === "PASSWORDCHANGED") {
+        return {
+            logged: state.logged,
+            user: {
+                username: state.user.username,
+                password: action.payload
+            },
+            post: {
+                id: state.post.id,
+                title: state.post.title,
+                body: state.post.body
+            },
+            postCollection: state.postCollection,
+            errorAlertVisible: false,
+            errorAlertText: "",
+            infoAlertVisible: true,
+            infoAlertText: "PASSWORD CHANGED SUCCESSFULLY."
+        };
+    }
+    else if (action.type === "LOGGEDIN") {
+        return {
+            logged: true,
+            user: {
+                username: action.payload.username,
+                password: action.payload.password
+            },
+            post: {
+                id: state.post.id,
+                title: state.post.title,
+                body: state.post.body
+            },
+            postCollection: state.postCollection,
+            errorAlertVisible: false,
+            errorAlertText: "",
+            infoAlertVisible: true,
+            infoAlertText: "LOGGED IN SUCCESSFULLY."
+        };
+    }
+    else if (action.type === "LOGGEDOUT") {
+        return {
+            logged: false,
+            user: {
                 username: "",
-                errorAlertVisible: false,
-                errorAlertText: "",
-                infoAlertVisible: true,
-                infoAlertText: "LOGGED OUT SUCCESSFULLY."
-            }
-        case "SHOWERROR": {
-            return {
-                logged: state.logged,
-                username: state.username,
-                errorAlertVisible: true,
-                errorAlertText: action.text,
-                infoAlertVisible: false,
-                infoAlertText: ""
-            }
-        }
-        case "SHOWINFO": {
-            return {
-                logged: state.logged,
-                username: state.username,
-                errorAlertVisible: false,
-                errorAlertText: "",
-                infoAlertVisible: true,
-                infoAlertText: action.text
-            }
-        }
-        default:
-            return INITIAL_STATE;
+                password: ""
+            },
+            post: {
+                id: "",
+                title: "",
+                body: ""
+            },
+            postCollection: [],
+            errorAlertVisible: false,
+            errorAlertText: "",
+            infoAlertVisible: true,
+            infoAlertText: "LOGGED OUT SUCCESSFULLY."
+        };
+    }
+    else if (action.type === "POSTCLEARED") {
+        return {
+            logged: state.logged,
+            user: {
+                username: state.user.username,
+                password: state.user.password
+            },
+            post: {
+                id: "",
+                title: "",
+                body: ""
+            },
+            postCollection: state.postCollection,
+            errorAlertVisible: false,
+            errorAlertText: "",
+            infoAlertVisible: true,
+            infoAlertText: "POST CLEARED SUCCESSFULLY."
+        };
+    }
+    else if (action.type === "TITLECHANGED") {
+        return {
+            logged: state.logged,
+            user: {
+                username: state.user.username,
+                password: state.user.password
+            },
+            post: {
+                id: state.post.id,
+                title: action.payload,
+                body: state.post.body
+            },
+            postCollection: state.postCollection,
+            errorAlertVisible: false,
+            errorAlertText: "",
+            infoAlertVisible: true,
+            infoAlertText: "TITLE CHANGED SUCCESSFULLY."
+        };
+    }
+    else if (action.type === "BODYCHANGED") {
+        return {
+            logged: state.logged,
+            user: {
+                username: state.user.username,
+                password: state.user.password
+            },
+            post: {
+                id: state.post.id,
+                title: state.post.title,
+                body: action.payload
+            },
+            postCollection: state.postCollection,
+            errorAlertVisible: false,
+            errorAlertText: "",
+            infoAlertVisible: true,
+            infoAlertText: "BODY CHANGED SUCCESSFULLY."
+        };
+    }
+    else if (action.type === "POSTCREATED") {
+        let newPostCollection = [...state.postCollection, action.payload];
+        return {
+            logged: state.logged,
+            user: {
+                username: state.user.username,
+                password: state.user.password
+            },
+            post: {
+                id: action.payload.id,
+                title: action.payload.title,
+                body: action.payload.body
+            },
+            postCollection: newPostCollection,
+            errorAlertVisible: false,
+            errorAlertText: "",
+            infoAlertVisible: true,
+            infoAlertText: "POST CREATED SUCCESSFULLY."
+        };
+    }
+    else if (action.type === "POSTUPDATED") {
+        let newPostCollection = [...state.postCollection];
+        let index = newPostCollection.findIndex(x => x.id === action.payload.id);
+        newPostCollection.splice(index, 1);
+        newPostCollection.splice(index, 0, action.payload);
+        return {
+            logged: state.logged,
+            user: {
+                username: state.user.username,
+                password: state.user.password
+            },
+            post: {
+                id: action.payload.id,
+                title: action.payload.title,
+                body: action.payload.body
+            },
+            postCollection: newPostCollection,
+            errorAlertVisible: false,
+            errorAlertText: "",
+            infoAlertVisible: true,
+            infoAlertText: "POST UPDATED SUCCESSFULLY."
+        };
+    }
+    else if (action.type === "POSTSFETCHED") {
+        return {
+            logged: state.logged,
+            user: {
+                username: state.user.username,
+                password: state.user.password
+            },
+            post: {
+                id: state.post.id,
+                title: state.post.title,
+                body: state.post.body
+            },
+            postCollection: action.payload,
+            errorAlertVisible: false,
+            errorAlertText: "",
+            infoAlertVisible: true,
+            infoAlertText: "POSTS FETCHED SUCCESSFULLY."
+        };
+    }
+    else if (action.type === "POSTEDITED") {
+        return {
+            logged: state.logged,
+            user: {
+                username: state.user.username,
+                password: state.user.password
+            },
+            post: {
+                id: action.payload.id,
+                title: action.payload.title,
+                body: action.payload.body
+            },
+            postCollection: state.postCollection,
+            errorAlertVisible: false,
+            errorAlertText: "",
+            infoAlertVisible: true,
+            infoAlertText: "POST SELECTED SUCCESSFULLY."
+        };
+    }
+    else if (action.type === "POSTDELETED") {
+        let newPostCollection = [...state.postCollection];
+        let index = newPostCollection.findIndex(x => x.id === action.payload);
+        newPostCollection.splice(index, 1);
+        return {
+            logged: state.logged,
+            user: {
+                username: state.user.username,
+                password: state.user.password
+            },
+            post: {
+                id: "",
+                title: "",
+                body: ""
+            },
+            postCollection: newPostCollection,
+            errorAlertVisible: false,
+            errorAlertText: "",
+            infoAlertVisible: true,
+            infoAlertText: "POST DELETED SUCCESSFULLY."
+        };
+    }
+    else {
+        return INITIAL_STATE;
     }
 };
 const store = redux.createStore(reducer);
