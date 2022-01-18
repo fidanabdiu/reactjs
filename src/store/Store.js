@@ -16,8 +16,22 @@ const INITIAL_STATE = {
     infoAlertVisible: true,
     infoAlertText: "WELCOME"
 };
+export const ERROR = "ERROR";
+export const INFO = "INFO";
+export const USERNAMECHANGED = "USERNAMECHANGED";
+export const PASSWORDCHANGED = "PASSWORDCHANGED";
+export const LOGGEDIN = "LOGGEDIN";
+export const LOGGEDOUT = "LOGGEDOUT";
+export const POSTCLEARED = "POSTCLEARED";
+export const TITLECHANGED = "TITLECHANGED";
+export const BODYCHANGED = "BODYCHANGED";
+export const POSTCREATED = "POSTCREATED";
+export const POSTUPDATED = "POSTUPDATED";
+export const POSTSFETCHED = "POSTSFETCHED";
+export const POSTEDITED = "POSTEDITED";
+export const POSTDELETED = "POSTDELETED";
 const reducer = function (state, action) {
-    if (action.type === "ERROR") {
+    if (action.type === ERROR) {
         return {
             logged: state.logged,
             user: {
@@ -36,7 +50,7 @@ const reducer = function (state, action) {
             infoAlertText: ""
         };
     }
-    else if (action.type === "INFO") {
+    else if (action.type === INFO) {
         return {
             logged: state.logged,
             user: {
@@ -55,7 +69,7 @@ const reducer = function (state, action) {
             infoAlertText: action.payload
         };
     }
-    else if (action.type === "USERNAMECHANGED") {
+    else if (action.type === USERNAMECHANGED) {
         return {
             logged: state.logged,
             user: {
@@ -74,7 +88,7 @@ const reducer = function (state, action) {
             infoAlertText: "USERNAME CHANGED SUCCESSFULLY."
         };
     }
-    else if (action.type === "PASSWORDCHANGED") {
+    else if (action.type === PASSWORDCHANGED) {
         return {
             logged: state.logged,
             user: {
@@ -93,7 +107,7 @@ const reducer = function (state, action) {
             infoAlertText: "PASSWORD CHANGED SUCCESSFULLY."
         };
     }
-    else if (action.type === "LOGGEDIN") {
+    else if (action.type === LOGGEDIN) {
         return {
             logged: true,
             user: {
@@ -112,7 +126,7 @@ const reducer = function (state, action) {
             infoAlertText: "LOGGED IN SUCCESSFULLY."
         };
     }
-    else if (action.type === "LOGGEDOUT") {
+    else if (action.type === LOGGEDOUT) {
         return {
             logged: false,
             user: {
@@ -131,7 +145,7 @@ const reducer = function (state, action) {
             infoAlertText: "LOGGED OUT SUCCESSFULLY."
         };
     }
-    else if (action.type === "POSTCLEARED") {
+    else if (action.type === POSTCLEARED) {
         return {
             logged: state.logged,
             user: {
@@ -150,7 +164,7 @@ const reducer = function (state, action) {
             infoAlertText: "POST CLEARED SUCCESSFULLY."
         };
     }
-    else if (action.type === "TITLECHANGED") {
+    else if (action.type === TITLECHANGED) {
         return {
             logged: state.logged,
             user: {
@@ -169,7 +183,7 @@ const reducer = function (state, action) {
             infoAlertText: "TITLE CHANGED SUCCESSFULLY."
         };
     }
-    else if (action.type === "BODYCHANGED") {
+    else if (action.type === BODYCHANGED) {
         return {
             logged: state.logged,
             user: {
@@ -188,7 +202,7 @@ const reducer = function (state, action) {
             infoAlertText: "BODY CHANGED SUCCESSFULLY."
         };
     }
-    else if (action.type === "POSTCREATED") {
+    else if (action.type === POSTCREATED) {
         let newPostCollection = [...state.postCollection, action.payload];
         return {
             logged: state.logged,
@@ -208,7 +222,7 @@ const reducer = function (state, action) {
             infoAlertText: "POST CREATED SUCCESSFULLY."
         };
     }
-    else if (action.type === "POSTUPDATED") {
+    else if (action.type === POSTUPDATED) {
         let newPostCollection = [...state.postCollection];
         let index = newPostCollection.findIndex(x => x.id === action.payload.id);
         newPostCollection.splice(index, 1);
@@ -231,7 +245,7 @@ const reducer = function (state, action) {
             infoAlertText: "POST UPDATED SUCCESSFULLY."
         };
     }
-    else if (action.type === "POSTSFETCHED") {
+    else if (action.type === POSTSFETCHED) {
         return {
             logged: state.logged,
             user: {
@@ -250,7 +264,7 @@ const reducer = function (state, action) {
             infoAlertText: "POSTS FETCHED SUCCESSFULLY."
         };
     }
-    else if (action.type === "POSTEDITED") {
+    else if (action.type === POSTEDITED) {
         return {
             logged: state.logged,
             user: {
@@ -269,7 +283,7 @@ const reducer = function (state, action) {
             infoAlertText: "POST SELECTED SUCCESSFULLY."
         };
     }
-    else if (action.type === "POSTDELETED") {
+    else if (action.type === POSTDELETED) {
         let newPostCollection = [...state.postCollection];
         let index = newPostCollection.findIndex(x => x.id === action.payload);
         newPostCollection.splice(index, 1);
