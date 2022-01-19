@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { ERROR } from "../store/Store";
 
-export default function NotFound(){
-    return(
-        <div>
-            <h1>PAGE NOT FOUND</h1>
-        </div>
+export default function NotFound() {
+    const dispatch = useDispatch();
+    useEffect(function () { dispatch({ type: ERROR, payload: "PAGE NOT FOUND" }); }, []);
+    return (
+        <div></div>
     );
 };

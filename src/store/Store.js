@@ -14,7 +14,7 @@ const INITIAL_STATE = {
     errorAlertVisible: false,
     errorAlertText: "",
     infoAlertVisible: true,
-    infoAlertText: "WELCOME"
+    infoAlertText: "INITIAL STATE"
 };
 export const ERROR = "ERROR";
 export const INFO = "INFO";
@@ -310,4 +310,9 @@ const reducer = function (state, action) {
     }
 };
 const store = redux.createStore(reducer);
+const stateChanged = function () {
+    let state = store.getState();
+    console.log(state);
+};
+store.subscribe(stateChanged);
 export default store;

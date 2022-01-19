@@ -1,11 +1,12 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { POSTCLEARED, TITLECHANGED, BODYCHANGED, ERROR, POSTCREATED, POSTUPDATED } from '../store/Store';
+import { Card, Form, Button } from 'react-bootstrap';
 
 export default function PostForm() {
     const post = useSelector(state => state.post);
     const dispatch = useDispatch();
-    const clearHandler = function () {
+    const newHandler = function () {
         dispatch({ type: POSTCLEARED });
     };
     const titleChangedHandler = function (event) {
@@ -31,33 +32,42 @@ export default function PostForm() {
             headers: {
                 "Content-Type": "application/json"
             }
-        }).then(response => response.json()).then(response => {
-            if (post.id === "") {
-                dispatch({ type: POSTCREATED, payload: { id: response.name, title: post.title, body: post.body } });
+        }).then(function (response) {
+            if (response.status === 200) {
+                response.json().then(function (data) {
+                    if (post.id === "") {
+                        dispatch({ type: POSTCREATED, payload: { id: data.name, title: post.title, body: post.body } });
+                    }
+                    else {
+                        dispatch({ type: POSTUPDATED, payload: { id: post.id, title: post.title, body: post.body } });
+                    }
+                });
             }
             else {
-                dispatch({ type: POSTUPDATED, payload: { id: post.id, title: post.title, body: post.body } });
+                dispatch({ type: ERROR, payload: "ERROR WHILE COMMUNICATING WITH THE API." });
             }
         });
     };
     return (
-        <>
-            <div className="mb-3">
-                <label htmlFor="txtId" className="form-label">ID</label>
-                <input type="text" className="form-control" id="txtId" value={post.id} disabled />
-            </div>
-            <div className="mb-3">
-                <label htmlFor="txtTitle" className="form-label">TITLE</label>
-                <input type="text" className="form-control" id="txtTitle" value={post.title} onChange={titleChangedHandler} />
-            </div>
-            <div className="mb-3">
-                <label htmlFor="txtBody" className="form-label">BODY</label>
-                <textarea className="form-control" id="txtBody" value={post.body} onChange={bodyChangedHandler} rows="3"></textarea>
-            </div>
-            <div className="mb-3">
-                <button type="button" className="btn btn-primary" onClick={clearHandler}>CLEAR</button>
-                <button type="button" className="btn btn-primary" onClick={saveHandler}>SAVE</button>
-            </div>
-        </>
+        <Card style={{ margin: "10px" }}>
+            <Card.Header>POST</Card.Header>
+            <Card.Body>
+                <Form>
+                    <Form.Group className="mb-3">
+                        <Form.Control type="text" placeholder="ID" value={post.id} disabled />
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Control type="text" placeholder="ENTER TITLE" value={post.title} onChange={titleChangedHandler} />
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Form.Control as="textarea" placeholder="ENTER BODY" value={post.body} onChange={bodyChangedHandler} rows={3} />
+                    </Form.Group>
+                    <Form.Group className="mb-3">
+                        <Button variant="light" type="button" onClick={newHandler}>NEW</Button>
+                        <Button variant="light" type="button" onClick={saveHandler}>SAVE</Button>
+                    </Form.Group>
+                </Form>
+            </Card.Body>
+        </Card>
     );
 };
