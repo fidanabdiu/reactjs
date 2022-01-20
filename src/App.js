@@ -1,19 +1,20 @@
 import './App.css';
-import React from 'react';
+import { React } from 'react';
 import { useSelector } from 'react-redux';
 import { Switch, Route, Redirect } from 'react-router-dom';
+import { Alert } from 'react-bootstrap';
 import Home from "./pages/Home";
 import Posts from "./pages/Posts";
 import NotFound from "./pages/NotFound";
-import Login from './pages/Login';
+import Login from "./pages/Login";
 import Header from "./components/Header";
 
 export default function App() {
   const state = useSelector(state => state);
   return (
     <div>
-      {state.errorAlertVisible ? <div className="alert alert-danger" role="alert" style={{ margin: "0" }}>{state.errorAlertText}</div> : <div></div>}
-      {state.infoAlertVisible ? <div className="alert alert-info" role="alert" style={{ margin: "0" }}>{state.infoAlertText}</div> : <div></div>}
+      {state.errorAlertVisible ? <Alert variant="danger" style={{ margin: "0" }}>{state.errorAlertText}</Alert> : <></>}
+      {state.infoAlertVisible ? <Alert variant="success" style={{ margin: "0" }}>{state.infoAlertText}</Alert> : <></>}
       {state.logged ? <Header /> : <div></div>}
       <main>
         <Switch>

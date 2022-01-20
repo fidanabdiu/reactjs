@@ -2,12 +2,14 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Card } from 'react-bootstrap';
-import { POSTSFETCHED, POSTEDITED, POSTDELETED, ERROR } from '../store/Store';
+import { POSTS_FETCHED, POST_EDITED, POST_DELETED, ERROR } from '../redux/Store';
 
 export default function PostList() {
     const postCollection = useSelector(state => state.postCollection);
     const dispatch = useDispatch();
-    useEffect(function () { getHandler(); }, []);
+    useEffect(function () {
+        getHandler();
+    }, []);
     const getHandler = function () {
         fetch("https://reactjs-e78ff-default-rtdb.firebaseio.com/posts.json").then(function (response) {
             if (response.status === 200) {
@@ -20,7 +22,7 @@ export default function PostList() {
                             body: data[key].body
                         });
                     }
-                    dispatch({ type: POSTSFETCHED, payload: newPostCollection });
+                    dispatch({ type: POSTS_FETCHED, payload: newPostCollection });
                 });
             }
             else {
@@ -31,7 +33,7 @@ export default function PostList() {
     const editHandler = function (event) {
         let id = event.target.id.split('|')[1];
         let post = postCollection.find(x => x.id === id);
-        dispatch({ type: POSTEDITED, payload: post });
+        dispatch({ type: POST_EDITED, payload: post });
     };
     const deleteHandler = function (event) {
         let id = event.target.id.split('|')[1];
@@ -44,7 +46,7 @@ export default function PostList() {
         }).then(function (response) {
             if (response.status === 200) {
                 response.json().then(function (data) {
-                    dispatch({ type: POSTDELETED, payload: id });
+                    dispatch({ type: POST_DELETED, payload: id });
                 });
             }
             else {

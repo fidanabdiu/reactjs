@@ -1,12 +1,12 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { LOGGEDOUT } from "../store/Store";
+import { LOGGED_OUT } from "../redux/Store";
 
 export default function Header() {
     const dispatch = useDispatch();
     const logoutHandler = function () {
-        dispatch({ type: LOGGEDOUT });
+        dispatch({ type: LOGGED_OUT });
     };
     return (
         <header>

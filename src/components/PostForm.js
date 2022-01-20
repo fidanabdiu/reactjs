@@ -1,19 +1,19 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { POSTCLEARED, TITLECHANGED, BODYCHANGED, ERROR, POSTCREATED, POSTUPDATED } from '../store/Store';
+import { POST_CLEARED, TITLE_CHANGED, BODY_CHANGED, ERROR, POST_CREATED, POST_UPDATED } from '../redux/Store';
 import { Card, Form, Button } from 'react-bootstrap';
 
 export default function PostForm() {
     const post = useSelector(state => state.post);
     const dispatch = useDispatch();
     const newHandler = function () {
-        dispatch({ type: POSTCLEARED });
+        dispatch({ type: POST_CLEARED });
     };
     const titleChangedHandler = function (event) {
-        dispatch({ type: TITLECHANGED, payload: event.target.value });
+        dispatch({ type: TITLE_CHANGED, payload: event.target.value });
     };
     const bodyChangedHandler = function (event) {
-        dispatch({ type: BODYCHANGED, payload: event.target.value });
+        dispatch({ type: BODY_CHANGED, payload: event.target.value });
     };
     const saveHandler = function () {
         if (post.title.trim().length === 0) {
@@ -36,10 +36,10 @@ export default function PostForm() {
             if (response.status === 200) {
                 response.json().then(function (data) {
                     if (post.id === "") {
-                        dispatch({ type: POSTCREATED, payload: { id: data.name, title: post.title, body: post.body } });
+                        dispatch({ type: POST_CREATED, payload: { id: data.name, title: post.title, body: post.body } });
                     }
                     else {
-                        dispatch({ type: POSTUPDATED, payload: { id: post.id, title: post.title, body: post.body } });
+                        dispatch({ type: POST_UPDATED, payload: { id: post.id, title: post.title, body: post.body } });
                     }
                 });
             }

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { ERROR } from "../store/Store";
+import ERROR from "../redux/Store";
 
 export default function NotFound() {
     const dispatch = useDispatch();

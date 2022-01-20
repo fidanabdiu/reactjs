@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { ERROR, LOGGEDIN, USERNAMECHANGED, PASSWORDCHANGED } from "../store/Store";
+import { ERROR, LOGGED_IN, USERNAME_CHANGED, PASSWORD_CHANGED } from "../redux/Store";
 import { Row, Col, Card, Form, Button } from "react-bootstrap";
 
 export default function Login() {
@@ -24,7 +24,7 @@ export default function Login() {
         }).then(function (response) {
             if (response.status === 200) {
                 response.json().then(function (data) {
-                    dispatch({ type: LOGGEDIN, payload: { username: user.username, password: user.password } });
+                    dispatch({ type: LOGGED_IN, payload: { username: user.username, password: user.password } });
                 });
             }
             else if (response.status === 400) {
@@ -36,10 +36,10 @@ export default function Login() {
         });
     };
     const usernameChangedHandler = function (event) {
-        dispatch({ type: USERNAMECHANGED, payload: event.target.value });
+        dispatch({ type: USERNAME_CHANGED, payload: event.target.value });
     };
     const passwordChangedHandler = function (event) {
-        dispatch({ type: PASSWORDCHANGED, payload: event.target.value });
+        dispatch({ type: PASSWORD_CHANGED, payload: event.target.value });
     };
     return (
         <div>

@@ -1,4 +1,5 @@
 const redux = require("redux");
+const LOCALSTORAGE_KEY = "REACTJS";
 const INITIAL_STATE = {
     logged: false,
     user: {
@@ -18,18 +19,18 @@ const INITIAL_STATE = {
 };
 export const ERROR = "ERROR";
 export const INFO = "INFO";
-export const USERNAMECHANGED = "USERNAMECHANGED";
-export const PASSWORDCHANGED = "PASSWORDCHANGED";
-export const LOGGEDIN = "LOGGEDIN";
-export const LOGGEDOUT = "LOGGEDOUT";
-export const POSTCLEARED = "POSTCLEARED";
-export const TITLECHANGED = "TITLECHANGED";
-export const BODYCHANGED = "BODYCHANGED";
-export const POSTCREATED = "POSTCREATED";
-export const POSTUPDATED = "POSTUPDATED";
-export const POSTSFETCHED = "POSTSFETCHED";
-export const POSTEDITED = "POSTEDITED";
-export const POSTDELETED = "POSTDELETED";
+export const USERNAME_CHANGED = "USERNAMECHANGED";
+export const PASSWORD_CHANGED = "PASSWORDCHANGED";
+export const LOGGED_IN = "LOGGEDIN";
+export const LOGGED_OUT = "LOGGEDOUT";
+export const POST_CLEARED = "POSTCLEARED";
+export const TITLE_CHANGED = "TITLECHANGED";
+export const BODY_CHANGED = "BODYCHANGED";
+export const POST_CREATED = "POSTCREATED";
+export const POST_UPDATED = "POSTUPDATED";
+export const POSTS_FETCHED = "POSTSFETCHED";
+export const POST_EDITED = "POSTEDITED";
+export const POST_DELETED = "POSTDELETED";
 const reducer = function (state, action) {
     if (action.type === ERROR) {
         return {
@@ -69,7 +70,7 @@ const reducer = function (state, action) {
             infoAlertText: action.payload
         };
     }
-    else if (action.type === USERNAMECHANGED) {
+    else if (action.type === USERNAME_CHANGED) {
         return {
             logged: state.logged,
             user: {
@@ -88,7 +89,7 @@ const reducer = function (state, action) {
             infoAlertText: "USERNAME CHANGED SUCCESSFULLY."
         };
     }
-    else if (action.type === PASSWORDCHANGED) {
+    else if (action.type === PASSWORD_CHANGED) {
         return {
             logged: state.logged,
             user: {
@@ -107,7 +108,7 @@ const reducer = function (state, action) {
             infoAlertText: "PASSWORD CHANGED SUCCESSFULLY."
         };
     }
-    else if (action.type === LOGGEDIN) {
+    else if (action.type === LOGGED_IN) {
         return {
             logged: true,
             user: {
@@ -126,7 +127,7 @@ const reducer = function (state, action) {
             infoAlertText: "LOGGED IN SUCCESSFULLY."
         };
     }
-    else if (action.type === LOGGEDOUT) {
+    else if (action.type === LOGGED_OUT) {
         return {
             logged: false,
             user: {
@@ -145,7 +146,7 @@ const reducer = function (state, action) {
             infoAlertText: "LOGGED OUT SUCCESSFULLY."
         };
     }
-    else if (action.type === POSTCLEARED) {
+    else if (action.type === POST_CLEARED) {
         return {
             logged: state.logged,
             user: {
@@ -164,7 +165,7 @@ const reducer = function (state, action) {
             infoAlertText: "POST CLEARED SUCCESSFULLY."
         };
     }
-    else if (action.type === TITLECHANGED) {
+    else if (action.type === TITLE_CHANGED) {
         return {
             logged: state.logged,
             user: {
@@ -183,7 +184,7 @@ const reducer = function (state, action) {
             infoAlertText: "TITLE CHANGED SUCCESSFULLY."
         };
     }
-    else if (action.type === BODYCHANGED) {
+    else if (action.type === BODY_CHANGED) {
         return {
             logged: state.logged,
             user: {
@@ -202,7 +203,7 @@ const reducer = function (state, action) {
             infoAlertText: "BODY CHANGED SUCCESSFULLY."
         };
     }
-    else if (action.type === POSTCREATED) {
+    else if (action.type === POST_CREATED) {
         let newPostCollection = [...state.postCollection, action.payload];
         return {
             logged: state.logged,
@@ -222,7 +223,7 @@ const reducer = function (state, action) {
             infoAlertText: "POST CREATED SUCCESSFULLY."
         };
     }
-    else if (action.type === POSTUPDATED) {
+    else if (action.type === POST_UPDATED) {
         let newPostCollection = [...state.postCollection];
         let index = newPostCollection.findIndex(x => x.id === action.payload.id);
         newPostCollection.splice(index, 1);
@@ -245,7 +246,7 @@ const reducer = function (state, action) {
             infoAlertText: "POST UPDATED SUCCESSFULLY."
         };
     }
-    else if (action.type === POSTSFETCHED) {
+    else if (action.type === POSTS_FETCHED) {
         return {
             logged: state.logged,
             user: {
@@ -264,7 +265,7 @@ const reducer = function (state, action) {
             infoAlertText: "POSTS FETCHED SUCCESSFULLY."
         };
     }
-    else if (action.type === POSTEDITED) {
+    else if (action.type === POST_EDITED) {
         return {
             logged: state.logged,
             user: {
@@ -283,7 +284,7 @@ const reducer = function (state, action) {
             infoAlertText: "POST SELECTED SUCCESSFULLY."
         };
     }
-    else if (action.type === POSTDELETED) {
+    else if (action.type === POST_DELETED) {
         let newPostCollection = [...state.postCollection];
         let index = newPostCollection.findIndex(x => x.id === action.payload);
         newPostCollection.splice(index, 1);
@@ -306,13 +307,24 @@ const reducer = function (state, action) {
         };
     }
     else {
-        return INITIAL_STATE;
+        return getState();
     }
 };
 const store = redux.createStore(reducer);
-const stateChanged = function () {
+const stateChangedHandler = function () {
     let state = store.getState();
+    let stateJson = JSON.stringify(state);
+    localStorage.setItem(LOCALSTORAGE_KEY, stateJson);
     console.log(state);
 };
-store.subscribe(stateChanged);
+store.subscribe(stateChangedHandler);
+function getState() {
+    let stateJson = localStorage.getItem(LOCALSTORAGE_KEY);
+    if (stateJson === null) {
+        stateJson = JSON.stringify(INITIAL_STATE);
+        localStorage.setItem(LOCALSTORAGE_KEY, stateJson);
+    }
+    let state = JSON.parse(stateJson);
+    return state;
+};
 export default store;
