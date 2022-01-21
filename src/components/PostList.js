@@ -74,15 +74,17 @@ export default function PostList() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {postCollection.map(x =>
-                                    <tr key={x.id}>
-                                        <td><button id={"edit|" + x.id} type="button" className="btn btn-light" onClick={editHandler}>EDIT</button></td>
-                                        <td><button id={"delete|" + x.id} type="button" className="btn btn-light" onClick={deleteHandler}>DELETE</button></td>
-                                        <td>{x.id}</td>
-                                        <td>{x.title}</td>
-                                        <td>{x.body}</td>
-                                    </tr>
-                                )}
+                                {
+                                    postCollection.map(x => {
+                                        return <tr key={x.id}>
+                                            <td><button id={"edit|" + x.id} type="button" className="btn btn-light" onClick={editHandler}>EDIT</button></td>
+                                            <td><button id={"delete|" + x.id} type="button" className="btn btn-light" onClick={deleteHandler}>DELETE</button></td>
+                                            <td>{x.id}</td>
+                                            <td>{x.title}</td>
+                                            <td>{x.body}</td>
+                                        </tr>
+                                    })
+                                }
                             </tbody>
                         </table>
                 }

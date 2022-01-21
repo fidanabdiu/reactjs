@@ -1,12 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import * as reactRedux from "react-redux";
 import { Provider } from "react-redux";
-import { BrowserRouter } from "react-router-dom";
-import store from "./redux/Store";
-import App from "./App";
+import store from "../redux/Store";
+import Posts from "./Posts";
 
-describe("APP", function () {
-    test("RENDERS 'INITIAL STATE' IN INITIAL STATE", function () {
+describe("POSTS", function () {
+    test("RENDERS 'POSTS'", function () {
         //ARRANGE
         const useSelectorMock = jest.spyOn(reactRedux, "useSelector");
         useSelectorMock.mockReturnValue({
@@ -26,17 +25,11 @@ describe("APP", function () {
             infoAlertVisible: true,
             infoAlertText: "INITIAL STATE"
         });
-        render(
-            <Provider store={store}>
-                <BrowserRouter>
-                    <App />
-                </BrowserRouter>
-            </Provider>
-        );
+        render(<Provider store={store}><Posts /></Provider>);
         //ACT
         //...NOTHING...
         //ASSERT
-        const initialState = screen.getByText("INITIAL STATE");
-        expect(initialState).toBeInTheDocument();
+        const posts = screen.getByText("POSTS");
+        expect(posts).toBeInTheDocument();
     });
 });

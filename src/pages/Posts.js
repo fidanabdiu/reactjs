@@ -6,6 +6,7 @@ import { Row, Col } from "react-bootstrap";
 export default function Posts() {
     return (
         <div>
+            <div>POSTS</div>
             <Row>
                 <Col xs={4}>
                     <PostForm />
